@@ -35,7 +35,7 @@ async function generateWorks(works){
 
 generateWorks(works);
 
-//MIse en place des boutons filtres pour les projets
+//Mise en place des boutons filtres pour les projets
 
 const worksSectionH2 = document.querySelector("#portfolio h2");
 const filtersWorks = document.createElement("div");
@@ -73,3 +73,12 @@ for(let i=0; i < categories.length; i++){
         generateWorks(filteredWorks);
     });
 };
+
+//Changement de CSS si le filtre est actif
+
+filtersWorks.addEventListener("click", function(button) {
+    if (document.querySelector('#portfolio div:first-of-type button.active') !== null) {
+      document.querySelector('#portfolio div:first-of-type button.active').classList.remove('active');
+    }
+    button.target.className = "active";
+  });

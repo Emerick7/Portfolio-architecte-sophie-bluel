@@ -28,6 +28,11 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+
+html {
+	background: #FFFEF8;
+}
+
 body {
 	line-height: 1;
 }
@@ -123,8 +128,46 @@ li:hover {
 }
 #portfolio h2 {
 	text-align: center;
-	margin-bottom: 1em;
+	margin-bottom: 50px;
 }
+
+#portfolio div:first-of-type {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 50px;
+}
+
+#portfolio div:first-of-type button {
+	min-width: 100px;
+	height: 37px;
+	padding: 9px;
+	margin-right: 10px;
+	font-family: 'Syne';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 19px;
+	text-align: center;
+	color: #1D6154;
+	border: 1px solid #1D6154;
+	border-radius: 60px;
+	background: none;
+}
+
+#portfolio div:first-of-type button:last-of-type {
+	margin-right: 0px;
+}
+
+#portfolio div:first-of-type button:hover{
+	background-color: #1D6154;
+	color: white;
+}
+
+#portfolio div:first-of-type button.active{
+	background-color: #1D6154;
+	color: white;
+}
+
 .gallery {
 	width: 100%;
 	display: grid;
