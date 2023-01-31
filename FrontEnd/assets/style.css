@@ -156,13 +156,13 @@ li a img {
 	margin-bottom: 50px;
 }
 
-#portfolio div:first-of-type {
+.filter-buttons {
 	display: flex;
 	justify-content: center;
 	margin-bottom: 50px;
 }
 
-#portfolio div:first-of-type button {
+.filter-buttons button {
 	min-width: 100px;
 	height: 37px;
 	padding: 9px;
@@ -179,16 +179,16 @@ li a img {
 	background: none;
 }
 
-#portfolio div:first-of-type button:last-of-type {
+.filter-buttons button:last-of-type {
 	margin-right: 0px;
 }
 
-#portfolio div:first-of-type button:hover{
+.filter-buttons button:hover{
 	background-color: #1D6154;
 	color: white;
 }
 
-#portfolio div:first-of-type button.active{
+.filter-buttons button.active{
 	background-color: #1D6154;
 	color: white;
 }
@@ -339,3 +339,32 @@ body > section button {
 	text-align: center;
 	color: #000000;
 }
+
+#portfolio div:first-child {
+	display: flex;
+	flex-direction: row;
+	padding-left: 42%;
+}
+
+#portfolio div > a {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin: 0 0 50px 30px;
+	text-decoration: none;
+}
+
+#portfolio div > a img {
+	height: 20px;
+	width: 20px;
+	margin-right: 8px;
+}
+#portfolio div > a p {
+	font-style: normal;
+	font-weight: 400;
+	line-height: 16px;
+	color: #000000;
+}
+
+/*Modale*/
+
