@@ -1,3 +1,30 @@
+//Mode edition pour Log In
+
+function editionMode(){
+    const divBody = document.querySelector("body > div");
+    const editionModeTopSection = document.createElement("section");
+    divBody.before(editionModeTopSection);
+
+    const editionModeTopSectionIcon = document.createElement("img");
+    editionModeTopSectionIcon.src = "assets/icons/edition-icon.png";
+    editionModeTopSection.appendChild(editionModeTopSectionIcon);
+
+    const editionModeTopSectionP = document.createElement("p");
+    editionModeTopSectionP.innerText = "Mode édition";
+    editionModeTopSection.appendChild(editionModeTopSectionP);
+
+    const editionModeTopSectionPubButton = document.createElement("button");
+    editionModeTopSectionPubButton.innerText = "publier les changements";
+    editionModeTopSection.appendChild(editionModeTopSectionPubButton);
+};
+
+//Log In
+
+let userLogged = window.localStorage.getItem("loggedUser");
+if(userLogged !== null){
+    userLogged = JSON.parse(userLogged);
+    editionMode();
+}
 
 //Recuperation des projets depuis l'API et stockage dans la localStorage
 
@@ -44,6 +71,7 @@ worksSectionH2.after(filtersWorks);
 const filterButtonAll = document.createElement("button");
 filterButtonAll.innerText = "Tous";
 filtersWorks.appendChild(filterButtonAll);
+filterButtonAll.className = "active";
 
 filterButtonAll.addEventListener("click", function(){
     document.querySelector(".gallery").innerHTML = "";
@@ -77,8 +105,11 @@ for(let i=0; i < categories.length; i++){
 //Changement de CSS si le filtre est actif
 
 filtersWorks.addEventListener("click", function(button) {
+    if (button.target.classList.contains("active")){
+        return;
+    }
     if (document.querySelector('#portfolio div:first-of-type button.active') !== null) {
       document.querySelector('#portfolio div:first-of-type button.active').classList.remove('active');
     }
-    button.target.className = "active";
+    button.target.classList.add("active");
   });
