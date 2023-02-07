@@ -172,8 +172,6 @@ function generateAddWorkModalContent(){
     divMainContent.appendChild(titleAddWorkModal);
 
     const formAddWork = document.createElement("form");
-    formAddWork.action = "#";
-    formAddWork.method = "post";
     formAddWork.id = "form-add-work";
     divMainContent.appendChild(formAddWork);
 
@@ -249,25 +247,28 @@ function generateAddWorkModalContent(){
         const newWorkTitle = document.querySelector("#title-input").value;
         const newWorkCategory = document.querySelector("#category-select").value;
     
-        const newWork = {
-            image: newWorkPhoto,
-            title: newWorkTitle,
-            category: newWorkCategory,
-        };
-    
-        const newWorkJSON = JSON.stringify(newWork);
-    
-        const response = await fetch('http://localhost:5678/api/works', {
-            method: 'POST',
-            headers: {
-                'accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${userLogged.token}`,
-            },
-            body: newWorkJSON
-          });
-    
-        const result = await response.json();
+        let formData = new FormData();
+
+        formData.append("image", newWorkPhoto);
+        formData.append("title", newWorkTitle);
+        formData.append("category", newWorkCategory);
+
+        return fetch('http://localhost:5678/api/works', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "Authorization": `Bearer ${userLogged.token}`,
+        },
+        body: formData
+        }).then(response => response.json());
+
+        //Meme requete via XMLHttpRequest
+
+        /*let request = new XMLHttpRequest();
+        request.open("POST", "http://localhost:5678/api/works");
+        request.setRequestHeader("Content-Type", "multipart/form-data");
+        request.setRequestHeader("Authorization", `Bearer ${userLogged.token}`);
+        request.send(formData);*/
     };
 
     if (document.querySelectorAll("#form-add-work input").value != ""){
@@ -281,6 +282,7 @@ function generateAddWorkModalContent(){
         refreshWorks();
         generateWorks(works);
         showWorksModal(works);
+        window.location.replace("/index.html");
     });
 };
 
@@ -316,6 +318,19 @@ function showWorksModal(works){
         figureWorks.appendChild(imgWork);
         figureWorks.appendChild(titleWork);
         divGrid.appendChild(figureWorks);
+
+        deleteWorkButton.addEventListener("click", async function(){
+            const deleteWork = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${userLogged.token}`,
+                }
+            });
+            const result = await deleteWork.json();
+            refreshWorks();
+            generateWorks(works);
+            showWorksModal(works);
+        })
     };
 }
 
