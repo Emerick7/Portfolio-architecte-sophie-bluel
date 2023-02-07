@@ -40,7 +40,7 @@ async function logIn(){
         return;
     }else{
         const userLogged = JSON.stringify(result);
-        window.localStorage.setItem("loggedUser", userLogged);
+        window.sessionStorage.setItem("loggedUser", userLogged);
         window.location.replace("/index.html");
     }
 };

@@ -1,20 +1,20 @@
 //Log In
 
-let userLogged = window.localStorage.getItem("loggedUser");
+let userLogged = window.sessionStorage.getItem("loggedUser");
 if(userLogged !== null){
     userLogged = JSON.parse(userLogged);
     editionMode();
     loginLogout();
 };
 
-//Recuperation des projets depuis l'API et stockage dans la localStorage
+//Recuperation des projets depuis l'API et stockage dans la sessionStorage
 
-let works = window.localStorage.getItem("works");
+let works = window.sessionStorage.getItem("works");
 if (works === null){
     const answer = await fetch("http://localhost:5678/api/works")
     works = await answer.json();
     const worksJSON = JSON.stringify(works);
-    window.localStorage.setItem("works", worksJSON);
+    window.sessionStorage.setItem("works", worksJSON);
 }else{
     works = JSON.parse(works);
 };
@@ -60,12 +60,12 @@ filterButtonAll.addEventListener("click", function(){
     generateWorks(works);
 });
 
-let categories = window.localStorage.getItem("categories");
+let categories = window.sessionStorage.getItem("categories");
 if (categories === null){
     const answer = await fetch("http://localhost:5678/api/categories")
     categories = await answer.json();
     const categoriesJSON = JSON.stringify(categories);
-    window.localStorage.setItem("categories", categoriesJSON);
+    window.sessionStorage.setItem("categories", categoriesJSON);
 }else{
     categories = JSON.parse(categories);
 };
@@ -290,7 +290,7 @@ async function refreshWorks(){
     const answer = await fetch("http://localhost:5678/api/works")
     works = await answer.json();
     const worksJSON = JSON.stringify(works);
-    window.localStorage.setItem("works", worksJSON);
+    window.sessionStorage.setItem("works", worksJSON);
 };
 
 function showWorksModal(works){
@@ -419,7 +419,7 @@ function loginLogout(){
 
     loginLogoutLink.addEventListener("click", function(event){
         event.preventDefault();
-        window.localStorage.removeItem("loggedUser");
+        window.sessionStorage.removeItem("loggedUser");
         alert("You will be disconnected");
         window.location.replace("/index.html");
     });
