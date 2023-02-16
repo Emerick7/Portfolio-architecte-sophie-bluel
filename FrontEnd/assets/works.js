@@ -281,11 +281,11 @@ function generateAddWorkModalContent(){
         submitFormAddWork.style.backgroundColor = "#1D6154";
     };
 
-    submitFormAddWork.addEventListener("click", function(event){
+    submitFormAddWork.addEventListener("click", async function(event){
         event.preventDefault();
         if (newWorkPhoto && newWorkTitle && newWorkCategory){
             addWork();
-            refreshWorks();
+            await refreshWorks();
             document.querySelector(".gallery").innerHTML = "";
             generateWorks(works);
             document.querySelector(".gallery-modal").innerHTML = "";
@@ -331,7 +331,7 @@ function generateWorksModal(){
                     "Authorization": `Bearer ${userLogged.token}`,
                 }
             });
-            refreshWorks();
+            await refreshWorks();
             document.querySelector(".gallery").innerHTML = "";
             generateWorks(works);
             document.querySelector(".gallery-modal").innerHTML = "";
