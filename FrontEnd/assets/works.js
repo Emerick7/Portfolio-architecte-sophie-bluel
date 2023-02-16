@@ -249,16 +249,20 @@ function generateAddWorkModalContent(){
     submitFormAddWork.value = "Valider";
     formAddWork.appendChild(submitFormAddWork);
 
-    const newWorkPhoto = document.querySelector("#select-photo").files[0];
-    const newWorkTitle = document.querySelector("#title-input").value;
-    const newWorkCategory = document.querySelector("#category-select").value;
+    const newWorkPhoto = document.querySelector("#select-photo");
+    const newWorkTitle = document.querySelector("#title-input");
+    const newWorkCategory = document.querySelector("#category-select");
     
     async function addWork(){
+        const newWorkPhotoFile = newWorkPhoto.files[0];
+        const newWorkTitleValue = newWorkTitle.value;
+        const newWorkCategoryValue = newWorkCategory.value;
+
         let formData = new FormData();
 
-        formData.append("image", newWorkPhoto, newWorkPhoto.name);
-        formData.append("title", newWorkTitle);
-        formData.append("category", newWorkCategory);
+        formData.append("image", newWorkPhotoFile, newWorkPhotoFile.name);
+        formData.append("title", newWorkTitleValue);
+        formData.append("category", newWorkCategoryValue);
 
         return fetch('http://localhost:5678/api/works', {
         method: 'POST',
@@ -277,13 +281,13 @@ function generateAddWorkModalContent(){
         request.send(formData);*/
     };
 
-    if (newWorkPhoto && newWorkTitle && newWorkCategory){
+    if (newWorkPhoto.files[0] && newWorkTitle.value && newWorkCategory.value){
         submitFormAddWork.style.backgroundColor = "#1D6154";
     };
 
-    submitFormAddWork.addEventListener("click", async function(event){
+    formAddWork.addEventListener("submit", async function(event){
         event.preventDefault();
-        if (newWorkPhoto && newWorkTitle && newWorkCategory){
+        if (newWorkPhoto.files[0] && newWorkTitle.value && newWorkCategory.value){
             addWork();
             await refreshWorks();
             document.querySelector(".gallery").innerHTML = "";
