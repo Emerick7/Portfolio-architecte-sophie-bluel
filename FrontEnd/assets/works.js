@@ -130,6 +130,8 @@ closeButtonDiv.prepend(goBackModal);
 const divMainContent = document.createElement("div");
 mainDivModal.appendChild(divMainContent);
 
+const divGrid = document.createElement("div");
+
 function generateModalContent(){
     goBackModal.style.display = "none";
     closeButtonDiv.style.justifyContent = "end";
@@ -138,7 +140,10 @@ function generateModalContent(){
     titleModalGallery.innerText = "Galerie photo";
     divMainContent.appendChild(titleModalGallery);
 
-    showWorksModal(works);
+    divGrid.classList.add("gallery-modal");
+    divMainContent.appendChild(divGrid);
+    document.querySelector(".gallery-modal").innerHTML = "";
+    generateWorksModal();
 
     const hrSeperator = document.createElement("hr");
     divMainContent.appendChild(hrSeperator);
@@ -202,6 +207,8 @@ function generateAddWorkModalContent(){
     divAddPhotoP.innerText = "jpg, png : 4mo max";
     divAddPhoto.appendChild(divAddPhotoP);
 
+    //ajouter new FileReader() pour avoir url et mettre ne src img
+
     const labelTitleInput = document.createElement("label");
     labelTitleInput.setAttribute("for", "title-input");
     labelTitleInput.innerText = "Titre";
@@ -229,8 +236,8 @@ function generateAddWorkModalContent(){
 
     for(let i=0; i < categories.length; i++){
         const optionSelectCategory = document.createElement("option");
-        optionSelectCategory.innerText = categories[i].name
-        optionSelectCategory.value = categories[i].name
+        optionSelectCategory.innerText = categories[i].name;
+        optionSelectCategory.value = categories[i].id;
         categorySelect.appendChild(optionSelectCategory);
     };
 
@@ -242,21 +249,20 @@ function generateAddWorkModalContent(){
     submitFormAddWork.value = "Valider";
     formAddWork.appendChild(submitFormAddWork);
 
-    async function addWork(){
-        const newWorkPhoto = document.querySelector("#select-photo").value;
-        const newWorkTitle = document.querySelector("#title-input").value;
-        const newWorkCategory = document.querySelector("#category-select").value;
+    const newWorkPhoto = document.querySelector("#select-photo").files[0];
+    const newWorkTitle = document.querySelector("#title-input").value;
+    const newWorkCategory = document.querySelector("#category-select").value;
     
+    async function addWork(){
         let formData = new FormData();
 
-        formData.append("image", newWorkPhoto);
+        formData.append("image", newWorkPhoto, newWorkPhoto.name);
         formData.append("title", newWorkTitle);
         formData.append("category", newWorkCategory);
 
         return fetch('http://localhost:5678/api/works', {
         method: 'POST',
         headers: {
-            "Content-Type": "multipart/form-data",
             "Authorization": `Bearer ${userLogged.token}`,
         },
         body: formData
@@ -271,18 +277,20 @@ function generateAddWorkModalContent(){
         request.send(formData);*/
     };
 
-    if (document.querySelectorAll("#form-add-work input").value != ""){
-        submitFormAddWork.style.backgroundColor = "#A7A7A7";
+    if (newWorkPhoto && newWorkTitle && newWorkCategory){
+        submitFormAddWork.style.backgroundColor = "#1D6154";
     };
 
-    submitFormAddWork.addEventListener("submit", function(event){
+    submitFormAddWork.addEventListener("click", function(event){
         event.preventDefault();
-        if (document.querySelectorAll("#form-add-work input").value != "") return;
-        addWork();
-        refreshWorks();
-        generateWorks(works);
-        showWorksModal(works);
-        window.location.replace("/index.html");
+        if (newWorkPhoto && newWorkTitle && newWorkCategory){
+            addWork();
+            refreshWorks();
+            document.querySelector(".gallery").innerHTML = "";
+            generateWorks(works);
+            document.querySelector(".gallery-modal").innerHTML = "";
+            generateWorksModal(works);
+        };
     });
 };
 
@@ -293,10 +301,7 @@ async function refreshWorks(){
     window.sessionStorage.setItem("works", worksJSON);
 };
 
-function showWorksModal(works){
-    const divGrid = document.createElement("div");
-    divMainContent.appendChild(divGrid);
-    
+function generateWorksModal(){
     for(let i=0; i < works.length; i++){
         const figureWorks = document.createElement("figure");
         figureWorks.dataset.id = works[i].id;
@@ -326,13 +331,14 @@ function showWorksModal(works){
                     "Authorization": `Bearer ${userLogged.token}`,
                 }
             });
-            const result = await deleteWork.json();
             refreshWorks();
+            document.querySelector(".gallery").innerHTML = "";
             generateWorks(works);
-            showWorksModal(works);
+            document.querySelector(".gallery-modal").innerHTML = "";
+            generateWorksModal();
         })
     };
-}
+};
 
 //Mode edition pour Log In
 function editionMode(){

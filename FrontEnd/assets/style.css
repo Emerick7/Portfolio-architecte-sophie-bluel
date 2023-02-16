@@ -392,6 +392,7 @@ body > section button {
 	height: auto;
 	max-height: calc(100vh - 20px);
 	background: #FFFFFF;
+	overflow-y:auto;
 	
 	animation: slideFromTop .5s both;
 }
@@ -591,6 +592,7 @@ body > section button {
 	margin: 0 0 20px 0;
 	padding: 10px 50px;
 	border: none;
+	background-color: #A7A7A7;
 }
 @keyframes fadeIn {
 	from {opacity: 0;}
