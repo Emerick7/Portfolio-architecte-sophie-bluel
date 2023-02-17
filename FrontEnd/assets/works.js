@@ -288,12 +288,18 @@ function generateAddWorkModalContent(){
     formAddWork.addEventListener("submit", async function(event){
         event.preventDefault();
         if (newWorkPhoto.files[0] && newWorkTitle.value && newWorkCategory.value){
-            addWork();
+            await addWork();
             await refreshWorks();
+            divMainContent.innerText = "";
+            generateAddWorkModalContent();
+            alert("Your work has been succesfully added");
             document.querySelector(".gallery").innerHTML = "";
             generateWorks(works);
             document.querySelector(".gallery-modal").innerHTML = "";
             generateWorksModal(works);
+        }else{
+            alert("All the fields should be filled");
+            return;
         };
     });
 };
