@@ -207,7 +207,36 @@ function generateAddWorkModalContent(){
     divAddPhotoP.innerText = "jpg, png : 4mo max";
     divAddPhoto.appendChild(divAddPhotoP);
 
-    //ajouter new FileReader() pour avoir url et mettre ne src img
+    //ajout new FileReader pour apercu de l'image du nouveau projet
+
+    divAddPhotoInput.addEventListener("change", function(){
+        const fileExtension = /\.(jpg|png)$/i;
+        if(this.files.length === 0 || !fileExtension.test(this.files[0].name)){
+            return
+        }
+
+        divAddPhoto.innerHTML = "";
+
+        const file = this.files[0];
+        const fileReader = new FileReader();
+        fileReader.readAsArrayBuffer(file);
+        fileReader.addEventListener("load", (e) => displayImage(e, file));
+    });
+
+    function displayImage(e, file){
+        const figureElement = document.createElement("figure");
+        figureElement.id = "selected-image";
+
+        const image = document.createElement("img");
+        const imageBlob = new Blob([e.target.result], {type: file.type});
+        image.src = URL.createObjectURL(imageBlob);
+        image.style.height = "160px";
+        figureElement.style.height = "160px";
+        divAddPhoto.style.justifyContent = "center";
+
+        figureElement.appendChild(image);
+        divAddPhoto.appendChild(figureElement);
+    };
 
     const labelTitleInput = document.createElement("label");
     labelTitleInput.setAttribute("for", "title-input");
